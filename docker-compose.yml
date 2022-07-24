@@ -1,0 +1,150 @@
+version: '3.9'
+services:
+  mongouserdb1:
+    image: 'mongo:latest'
+    restart: always
+    container_name: shard2svr1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - 51001:27017
+    volumes:
+      - shard2svr1:/data/db
+      - .docker/mongo/mongo-init.sh :/docker-entrypoint-initdb.d/mongo-init.sh
+    entrypoint:
+      - bash
+      - -c
+      - |
+        cd /data
+        ls -R
+        echo "rp8BXgOVHOTRPaGm/AlfnTeL1pj1UhbTC/vQxvFHFe9k39GXz8EMGHj3pxd/PODJ
+              ULUt6tw0PlvhD7ARUpySXpWZJBqer/f9OXZP778dj6e6xezdw+LjtnSvFjUfIStF
+              P8BVXGSgAHN+H+de4yh4fb1TrvYrtrVrZdvlybjU8jWInmod7QrwNqxNN4w0eUOr
+              52/9C085+E4f3m6rQ/sQKVd1fToH0a61hrSH+FN11Ovbuddjjru2aEvXG9uJbwq8
+              +JRxRyN4zChyJHtjYRGNw4dCmMDxHNAWIj5zGXkw8F5+9sL1QEGhNJzcDabac98p
+              KNFi96ccdu8HXvRYXWkq466rcsgu1QaX8X2NVGxeY0KFhqpaOBe+ZRY9DQLDQ68k
+              bmZXGbU09eeT8EIl0vwU8qau2cw2CA9mF2tGp1f3SvYih9x5ZpFZMPdBlKUQ7I3F
+              /t4f3uV/oIhK8cQWos6qSmwWejezK5FdawDkG6aj4CE0hy0bh2SPyBHKQIXnriDo
+              RYke+AxGiTsuOiF2lEhi6xKYABWAJJJYEVaabuDZ4XBaKdV8EWuOcyqPWTf8zGF9
+              6ONWglcKe7sr8YLRBaAouAiSsgqONQc+XCmOlMqFrvdpjUaYZZCDDPcGwAhJ+JZg
+              mIOJCMtzZpTNzdhUh4e70FtEICOGD79Hk+CVEDNidQy/t20GRjiLyAx4qH6PkNOw
+              EhKbM0uooApr8HDt/h8M57M15bcpSn1nurFqj1LC6xqmxontfzcTluShBVmzyD37
+              tG/MhemgHVUkPVH658R8H0vYd46SPn2LnBqeMiQFSfAvcVNRnoQbumjO2vruIjW5
+              JXUe+2JO4L1PrietvXWlIsIZjfRqYRcF8To9qhKHQcLkNBGGYTGlbq3Uw2Tj8ql0
+              amYLzMwYlNF3y/XvRkall33GdU8ighiVhHkZFgpkmzuTJIjEgnkC0YhOPd2mKcAF
+              UyXrGQOp5AZ3OQcOI3M5Aecpr0qi+/KVK9ecWShVTRLmmD9N
+              " > replica.key
+        chown 999:999 /data/replica.key
+        chmod 400 /data/replica.key
+        cd /data/replica.key
+        exec docker-entrypoint.sh $$@
+    command: mongod --bind_ip_all --replSet shard2rs --port 27017 --keyFile /data/replica.key --dbpath /data/db
+    networks:
+      - backend
+  mongouserdb2:
+    image: 'mongo:latest'
+    restart: always
+    container_name: shard2svr2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - 51002:27017
+    volumes:
+      - shard2svr2:/data/db
+      - .docker/mongo/mongo-init.sh :/docker-entrypoint-initdb.d/mongo-init.sh
+    entrypoint:
+      - bash
+      - -c
+      - |
+        cd /data
+        ls -R
+        echo "rp8BXgOVHOTRPaGm/AlfnTeL1pj1UhbTC/vQxvFHFe9k39GXz8EMGHj3pxd/PODJ
+              ULUt6tw0PlvhD7ARUpySXpWZJBqer/f9OXZP778dj6e6xezdw+LjtnSvFjUfIStF
+              P8BVXGSgAHN+H+de4yh4fb1TrvYrtrVrZdvlybjU8jWInmod7QrwNqxNN4w0eUOr
+              52/9C085+E4f3m6rQ/sQKVd1fToH0a61hrSH+FN11Ovbuddjjru2aEvXG9uJbwq8
+              +JRxRyN4zChyJHtjYRGNw4dCmMDxHNAWIj5zGXkw8F5+9sL1QEGhNJzcDabac98p
+              KNFi96ccdu8HXvRYXWkq466rcsgu1QaX8X2NVGxeY0KFhqpaOBe+ZRY9DQLDQ68k
+              bmZXGbU09eeT8EIl0vwU8qau2cw2CA9mF2tGp1f3SvYih9x5ZpFZMPdBlKUQ7I3F
+              /t4f3uV/oIhK8cQWos6qSmwWejezK5FdawDkG6aj4CE0hy0bh2SPyBHKQIXnriDo
+              RYke+AxGiTsuOiF2lEhi6xKYABWAJJJYEVaabuDZ4XBaKdV8EWuOcyqPWTf8zGF9
+              6ONWglcKe7sr8YLRBaAouAiSsgqONQc+XCmOlMqFrvdpjUaYZZCDDPcGwAhJ+JZg
+              mIOJCMtzZpTNzdhUh4e70FtEICOGD79Hk+CVEDNidQy/t20GRjiLyAx4qH6PkNOw
+              EhKbM0uooApr8HDt/h8M57M15bcpSn1nurFqj1LC6xqmxontfzcTluShBVmzyD37
+              tG/MhemgHVUkPVH658R8H0vYd46SPn2LnBqeMiQFSfAvcVNRnoQbumjO2vruIjW5
+              JXUe+2JO4L1PrietvXWlIsIZjfRqYRcF8To9qhKHQcLkNBGGYTGlbq3Uw2Tj8ql0
+              amYLzMwYlNF3y/XvRkall33GdU8ighiVhHkZFgpkmzuTJIjEgnkC0YhOPd2mKcAF
+              UyXrGQOp5AZ3OQcOI3M5Aecpr0qi+/KVK9ecWShVTRLmmD9N
+              " > replica.key
+        chown 999:999 /data/replica.key
+        chmod 400 /data/replica.key
+        cd /data/replica.key
+        exec docker-entrypoint.sh $$@
+    command: mongod --bind_ip_all --replSet shard2rs --port 27017 --keyFile /data/replica.key --dbpath /data/db
+    networks:
+      - backend
+  mongouserdb3:
+    image: 'mongo:latest'
+    restart: always
+    container_name: shard2svr3
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+    env_file:
+      - .env
+    ports:
+      - 51003:27017
+    volumes:
+      - shard2svr3:/data/db
+      - .docker/mongo/mongo-init.sh :/docker-entrypoint-initdb.d/mongo-init.sh
+    entrypoint:
+      - bash
+      - -c
+      - |
+        cd /data
+        ls -R
+        echo "rp8BXgOVHOTRPaGm/AlfnTeL1pj1UhbTC/vQxvFHFe9k39GXz8EMGHj3pxd/PODJ
+              ULUt6tw0PlvhD7ARUpySXpWZJBqer/f9OXZP778dj6e6xezdw+LjtnSvFjUfIStF
+              P8BVXGSgAHN+H+de4yh4fb1TrvYrtrVrZdvlybjU8jWInmod7QrwNqxNN4w0eUOr
+              52/9C085+E4f3m6rQ/sQKVd1fToH0a61hrSH+FN11Ovbuddjjru2aEvXG9uJbwq8
+              +JRxRyN4zChyJHtjYRGNw4dCmMDxHNAWIj5zGXkw8F5+9sL1QEGhNJzcDabac98p
+              KNFi96ccdu8HXvRYXWkq466rcsgu1QaX8X2NVGxeY0KFhqpaOBe+ZRY9DQLDQ68k
+              bmZXGbU09eeT8EIl0vwU8qau2cw2CA9mF2tGp1f3SvYih9x5ZpFZMPdBlKUQ7I3F
+              /t4f3uV/oIhK8cQWos6qSmwWejezK5FdawDkG6aj4CE0hy0bh2SPyBHKQIXnriDo
+              RYke+AxGiTsuOiF2lEhi6xKYABWAJJJYEVaabuDZ4XBaKdV8EWuOcyqPWTf8zGF9
+              6ONWglcKe7sr8YLRBaAouAiSsgqONQc+XCmOlMqFrvdpjUaYZZCDDPcGwAhJ+JZg
+              mIOJCMtzZpTNzdhUh4e70FtEICOGD79Hk+CVEDNidQy/t20GRjiLyAx4qH6PkNOw
+              EhKbM0uooApr8HDt/h8M57M15bcpSn1nurFqj1LC6xqmxontfzcTluShBVmzyD37
+              tG/MhemgHVUkPVH658R8H0vYd46SPn2LnBqeMiQFSfAvcVNRnoQbumjO2vruIjW5
+              JXUe+2JO4L1PrietvXWlIsIZjfRqYRcF8To9qhKHQcLkNBGGYTGlbq3Uw2Tj8ql0
+              amYLzMwYlNF3y/XvRkall33GdU8ighiVhHkZFgpkmzuTJIjEgnkC0YhOPd2mKcAF
+              UyXrGQOp5AZ3OQcOI3M5Aecpr0qi+/KVK9ecWShVTRLmmD9N
+              " > replica.key
+        chown 999:999 /data/replica.key
+        chmod 400 /data/replica.key
+        cd /data/replica.key
+        exec docker-entrypoint.sh $$@
+    command: mongod --bind_ip_all --replSet shard2rs --port 27017 --keyFile /data/replica.key --dbpath /data/db
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+volumes:
+  shard1svr1: {}
+  shard1svr2: {}
+  shard1svr3: {}
