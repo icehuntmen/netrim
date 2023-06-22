@@ -1,22 +1,27 @@
+import {INestApplication, Logger} from '@nestjs/common';
+
+import bootstrap from "./app/bootstrap";
+
+// async function bootstrap() {
+//   const app = await NestFactory.create(AppModule);
+//   const globalPrefix = 'api';
+//   app.setGlobalPrefix(globalPrefix);
+//   const port = process.env.PORT || 3333;
+//   await app.listen(port);
+//   Logger.log(
+//     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+//   );
+// }
+//
+// bootstrap();
+
+
+let app: INestApplication;
+const logger = new Logger('NestApplication', { timestamp: true });
+
 /**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
+ * Shutdown the application.
  */
-
-import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-
-import { AppModule } from './app/app.module';
-
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3333;
-  await app.listen(port);
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
-}
-
-bootstrap();
+bootstrap(app, logger).catch((error: unknown) => {
+  logger.error(`API bootstrapping application failed! ${error}`);
+});

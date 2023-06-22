@@ -13,9 +13,13 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@netrim/commons": ["libs/commons/src/index.ts"]
+      "@netrim/": ["/*"],
+      "@netrim/commons": ["libs/commons/src/index.ts"],
+      "@netrim/discordata": ["apps/discordata/src/*"],
+      "@netrim/telegramm": ["apps/telegramm/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
