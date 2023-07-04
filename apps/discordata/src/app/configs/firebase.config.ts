@@ -15,6 +15,6 @@ export default registerAs(
     auth_provider: process.env.FB_AUTH_PROVIDER_X509_CERT_URL,
     client_x509_cert_url: process.env.FB_CLIENT_X509_CERT_URL,
     universe_domain: process.env.FB_UNIVERSE_DOMAIN,
-    file: require('../../../../../mydev-38dc5-firebase-adminsdk-vhvsz-2f104abe5f.json'),
+    file: require('../../../../../turbor-firebase.json'),
   })
 );
