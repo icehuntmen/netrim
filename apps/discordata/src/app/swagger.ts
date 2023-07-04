@@ -7,7 +7,7 @@ export default async function swaggerInit(app: INestApplication, config: ConfigS
   const fileDocumentSecondary = HelperService.readDocsFile('description.md');
   const description = [fileDocumentSecondary].filter((el) => el).join('\n\n');
   const documentBuild = new DocumentBuilder()
-    .setTitle(config.get('market.name'))
+    .setTitle('Discord Documentation')
     .setDescription(description)
     .setVersion(`v${version}`)
     .addBearerAuth()
@@ -20,6 +20,6 @@ export default async function swaggerInit(app: INestApplication, config: ConfigS
 
   SwaggerModule.setup('swagger', app, document, {
     explorer: true,
-    customSiteTitle: config.get('market.title'),
+    customSiteTitle: 'SSSS',
   });
 }

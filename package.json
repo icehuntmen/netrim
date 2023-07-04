@@ -1,6 +1,6 @@
 {
   "name": "netrim",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
@@ -11,6 +11,10 @@
   },
   "private": true,
   "dependencies": {
+    "@discord-nestjs/common": "^5.2.5",
+    "@discord-nestjs/core": "^5.3.7",
+    "@firebase/app": "^0.9.12",
+    "@firebase/firestore": "^3.12.2",
     "@nestjs/common": "^9.4.3",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.4.3",
@@ -22,8 +26,11 @@
     "axios": "^1.0.0",
     "class-validator": "^0.14.0",
     "cli-color": "^2.0.3",
+    "discord.js": "^14.11.0",
+    "firebase-admin": "^11.9.0",
     "helmet": "^7.0.0",
     "husky": "^8.0.3",
+    "nestjs-firebase": "^9.0.0",
     "nx": "^16.3.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
